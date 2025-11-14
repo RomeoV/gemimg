@@ -26,8 +26,14 @@ def main():
     )
     parser.add_argument(
         "--api-key",
-        default=os.getenv("GEMINI_API_KEY"),
-        help="API key for the Gemini API. Defaults to the GEMINI_API_KEY environment variable.",
+        default=None,
+        help="API key for the API. Defaults to OPENROUTER_API_KEY or GEMINI_API_KEY environment variable.",
+    )
+    parser.add_argument(
+        "--provider",
+        default="google",
+        choices=["google", "openrouter"],
+        help="API provider to use. Defaults to 'google'. Set to 'openrouter' to use OpenRouter.",
     )
     parser.add_argument(
         "--model", default="gemini-2.5-flash-image", help="The model to use."
@@ -65,12 +71,8 @@ def main():
 
     args = parser.parse_args()
 
-    if not args.api_key:
-        parser.error(
-            "API key is required. Provide it with --api-key or set the GEMINI_API_KEY environment variable."
-        )
-
-    gem_img = GemImg(api_key=args.api_key, model=args.model)
+    # API key validation will be handled by GemImg __post_init__
+    gem_img = GemImg(api_key=args.api_key, model=args.model, provider=args.provider)
 
     # We call generate with save=False to handle file saving manually.
     result = gem_img.generate(
