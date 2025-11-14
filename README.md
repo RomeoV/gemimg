@@ -1,39 +1,45 @@
 # gemimg
 
-gemimg is a lightweight (<400 LoC) Python package for easily interfacing with Google's [Gemini API](https://ai.google.dev) and the [Gemini 2.5 Flash Image model](https://deepmind.google/models/gemini/image/) (a.k.a. Nano Banana) with robust features. This tool allows for:
+## OpenRouter Fork
+
+This is a fork of gemimg modified to work with [OpenRouter](https://openrouter.ai) instead of Google's Gemini API directly. All functionality remains the same, but the API calls are routed through OpenRouter, giving you access to Gemini 2.5 Flash Image without needing a Google API key.
+
+---
+
+gemimg is a lightweight (<400 LoC) Python package for easily interfacing with the [Gemini 2.5 Flash Image model](https://deepmind.google/models/gemini/image/) (a.k.a. Nano Banana) via OpenRouter with robust features. This tool allows for:
 
 - Create images in many aspect ratios with only a few lines of code!
-- Minimal dependencies, and does not use Google's Client SDK.
+- Minimal dependencies using OpenRouter's OpenAI-compatible API.
 - Handles image I/O, including multi-image I/O and image encoding/decoding.
 - Generates images only: no irrelevant text output
 - Utilities for common use cases, such as saving, resizing, and compositing multiple images.
 - Allows [optionally storing the prompt](docs/notebooks/store_prompt_metadata.ipynb) in the PNG metadata.
 
-Although Gemini 2.5 Flash Image can be used for free in [Google AI Studio](https://aistudio.google.com/) or [Google Gemini](https://gemini.google.com/), those interfaces place a visible watermark on their outputs and have generation limits. Using gemimg and the Gemini API directly, not only do you have more programmatic control over the generation, but it's much easier to do more complex inputs which increases productivity for power users.
+Although Gemini 2.5 Flash Image can be used for free in [Google AI Studio](https://aistudio.google.com/) or [Google Gemini](https://gemini.google.com/), those interfaces place a visible watermark on their outputs and have generation limits. Using gemimg with OpenRouter, not only do you have more programmatic control over the generation, but it's much easier to do more complex inputs which increases productivity for power users.
 
 ## Installation
 
-gemimg can be installed [from PyPI](https://pypi.org/project/gemimg/):
+This fork is not published to PyPI. Install directly from the repository:
 
 ```sh
-pip3 install gemimg
+pip install git+https://github.com/YOUR_USERNAME/gemimg.git
 ```
 
 ```sh
-uv pip install gemimg
+uv pip install git+https://github.com/YOUR_USERNAME/gemimg.git
 ```
 
 ## Demo
 
-First, you will need to get a Gemini API key (from a GCP project which has billing information), or a free applicable API key.
+First, you will need to get an OpenRouter API key from [openrouter.ai/keys](https://openrouter.ai/keys).
 
 ```py3
 from gemimg import GemImg
 
-g = GemImg(api_key="AI...")
+g = GemImg(api_key="sk-or-...")
 ```
 
-You can also pass the API key by storing it in an `.env` file with a `GEMINI_API_KEY` field in the working directory (recommended), or by setting the environment variable of `GEMINI_API_KEY` directly to the API key.
+You can also pass the API key by storing it in an `.env` file with an `OPENROUTER_API_KEY` field in the working directory (recommended), or by setting the environment variable of `OPENROUTER_API_KEY` directly to the API key.
 
 Now, you can generate images with a simple text prompt!
 
@@ -153,7 +159,7 @@ gemimg "A kitten with prominent purple-and-green fur."
 python -m gemimg "A kitten with prominent purple-and-green fur."
 ```
 
-Common options: `-i/--input-images`, `-o/--output-file`, `--aspect-ratio`, `--output-dir`, `-n` (number of images), `--webp`, `--store-prompt`, `-f/--force`. The API key can be provided via `--api-key` or the `GEMINI_API_KEY` environment variable.
+Common options: `-i/--input-images`, `-o/--output-file`, `--aspect-ratio`, `--output-dir`, `-n` (number of images), `--webp`, `--store-prompt`, `-f/--force`. The API key can be provided via `--api-key` or the `OPENROUTER_API_KEY` environment variable.
 
 ## Gemini 2.5 Flash Image Model Notes
 
@@ -167,7 +173,7 @@ Common options: `-i/--input-images`, `-o/--output-file`, `--aspect-ratio`, `--ou
 
 ## Miscellaneous Notes
 
-- gemimg is intended to be bespoke and very tightly scoped. **Compatibility for other image generation APIs and/or endpoints will not be supported**, unless they follow the identical APIs (i.e. a hypothetical `gemini-3-flash-image`). As this repository is designed to be future-proof, there likely will not be many updates other than bug/compatability fixes.
+- This OpenRouter fork is designed specifically for the Gemini 2.5 Flash Image model via OpenRouter's API. Other models or endpoints are not supported.
 - gemimg intentionally does not support true multiturn conversations within a single conversational thread as:
   1. The technical lift for doing so would no longer make this package lightweight
   2. It is unclear if it's actually better for the typical use cases.
@@ -180,14 +186,19 @@ Common options: `-i/--input-images`, `-o/--output-file`, `--aspect-ratio`, `--ou
 
 ## Roadmap
 
-- Async support (for parallel calls and [FastAPI](https://fastapi.tiangolo.com) support)
-- Additional model parameters if the Gemini API supports them.
+This fork aims to maintain compatibility with the OpenRouter API and may diverge from the original project's roadmap as needed.
 
-## Maintainer/Creator
+## Original Creator
 
 Max Woolf ([@minimaxir](https://minimaxir.com))
 
+Original project: [minimaxir/gemimg](https://github.com/minimaxir/gemimg)
+
 _Max's open-source projects are supported by his [Patreon](https://www.patreon.com/minimaxir) and [GitHub Sponsors](https://github.com/sponsors/minimaxir). If you found this project helpful, any monetary contributions to the Patreon are appreciated and will be put to good creative use._
+
+## Fork Notes
+
+This OpenRouter fork was created for personal use and is provided as-is without ongoing maintenance commitments. The original project by Max Woolf continues to be actively maintained at [minimaxir/gemimg](https://github.com/minimaxir/gemimg).
 
 ## License
 
